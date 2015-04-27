@@ -23,5 +23,26 @@ publishing {
 	}
 }
 
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: metapackReleaseRepository) {
+                authentication(userName: artifactoryUser, password: artifactoryPassword)
+            }
+
+            snapshotRepository(url: metapackSnapshotRepository) {
+                authentication(userName: artifactoryUser, password: artifactoryPassword)
+            }
+        }
+    }
+}
+
+artifacts {
+    archives jar
+}
+
+
+
 defaultTasks 'clean', 'publishToMavenLocal'
 
