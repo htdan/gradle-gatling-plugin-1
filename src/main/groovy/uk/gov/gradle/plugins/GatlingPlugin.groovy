@@ -18,12 +18,18 @@ class GatlingPlugin implements Plugin<Project> {
 					'com.nimbusds:nimbus-jose-jwt:2.22.1'
 		}
 		project.repositories {
-			maven {
-				url 'http://repository.excilys.com/content/groups/public'
-				url 'https://oss.sonatype.org/content/repositories/snapshots'
-			}
-		}
-		gatlingReportsDirectory = "$project.buildDir.absolutePath/gatling-reports"
+            jcenter()
+            mavenLocal()
+            mavenCentral()
+        }
+        project.sourceSets {
+            test {
+                // change the build direcotry to gatling default
+                output.classesDir = 'target/test-classes'
+
+            }
+        }
+        gatlingReportsDirectory = "$project.buildDir.absolutePath/gatling-reports"
 		project.task('gatlingTest',
 				dependsOn:'build') << {
 			project.gatling.verifySettings()
