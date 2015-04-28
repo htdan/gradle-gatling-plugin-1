@@ -24,9 +24,11 @@ class GatlingPlugin implements Plugin<Project> {
         }
         project.sourceSets {
             test {
+				scala {
+					srcDirs = ['user-files/simulations']
+				}
                 // change the build direcotry to gatling default
                 output.classesDir = 'target/test-classes'
-
             }
         }
         gatlingReportsDirectory = "$project.buildDir.absolutePath/gatling-reports"
