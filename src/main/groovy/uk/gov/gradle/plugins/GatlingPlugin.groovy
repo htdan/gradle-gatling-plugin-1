@@ -72,7 +72,7 @@ class GatlingPlugin implements Plugin<Project> {
 	}
 
 	private getGatlingScenarios(sourceSet) {
-		final String scenarioSrcDir = "$project.projectDir.absolutePath/src/$sourceSet.name/scala"
+		final String scenarioSrcDir = "$project.projectDir.absolutePath/user-files/simulations"
 		final int scenarioPathPrefix = "$scenarioSrcDir/".size()
 		final int scenarioPathSuffix = - ('.scala'.size() + 1)
 		sourceSet.allScala.files*.toString().
