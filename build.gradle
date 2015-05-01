@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group = 'com.metapack.ddo'
-version = '1.2.2'
+version = '1.2.3'
 
 repositories.jcenter()
 
@@ -41,7 +41,6 @@ uploadArchives {
 artifacts {
     archives jar
 }
-
 
 
 defaultTasks 'clean', 'publishToMavenLocal'

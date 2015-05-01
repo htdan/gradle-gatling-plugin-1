@@ -27,6 +27,9 @@ class GatlingPlugin implements Plugin<Project> {
 				scala {
 					srcDirs = ['user-files/simulations']
 				}
+				resources{
+					srcDirs = ['user-files/conf', 'user-files/data']
+				}
                 // change the build direcotry to gatling default
                 output.classesDir = 'target/test-classes'
             }
