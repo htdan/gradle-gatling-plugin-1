@@ -3,12 +3,13 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group = 'com.metapack.ddo'
-version = '1.2.3'
+version = '1.2.4'
 
 repositories.jcenter()
 
 dependencies {
 	compile gradleApi()
+    testCompile 'junit:junit:4.11'
 }
 
 publishing {
