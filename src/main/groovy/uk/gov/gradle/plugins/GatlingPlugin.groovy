@@ -47,15 +47,11 @@ class GatlingPlugin implements Plugin<Project> {
             final def gatlingClasspath = sourceSet.output + sourceSet.runtimeClasspath
             final def scenarios = project.gatling._scenarios ?: getGatlingScenarios(sourceSet)
             final def localSystemProperties = System.getProperties()?:[:]
-            println 'System properties ' + localSystemProperties + project.gatling.systemProperties
 
             def include = project.getProperties().get('include')
             def exclude = project.getProperties().get('exclude')
             def whiteListPattern = createPatternFromList(include==null?null:Arrays.asList(include));
             def blackListPattern = createPatternFromList(exclude==null?null:Arrays.asList(exclude));
-
-            logger.info 'Include ' + whiteListPattern
-            logger.info 'Exclude ' + blackListPattern
 
             logger.lifecycle "Scenarios found before filter: $scenarios"
             scenarios?.each { scenario ->
@@ -76,6 +72,9 @@ class GatlingPlugin implements Plugin<Project> {
                         systemProperties(project.gatling.systemProperties ?
                                          localSystemProperties + project.gatling.systemProperties: localSystemProperties)
                     }
+                }
+                else{
+                    logger.lifecycle "Scenario is excluded to be executed: $scenario"
                 }
             }
             logger.lifecycle "Gatling scenarios completed."
@@ -118,14 +117,11 @@ class GatlingPlugin implements Plugin<Project> {
 
     static boolean check(String clazz, Pattern blackListPattern, Pattern whiteListPattern) {
         if (inWhiteList(clazz, whiteListPattern)) {
-            println "---- " + clazz + "  in white list. ----"
             return true;
         } else {
             if (inBlackList(clazz, blackListPattern)) {
-                println "---- " + clazz + "  in black list. ----"
                 return false;
             } else {
-                println "---- " + clazz + "  not in black and white list. ----"
                 return true;
             }
         }
