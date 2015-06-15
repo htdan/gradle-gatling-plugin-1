@@ -16,6 +16,7 @@ class GatlingPlugin implements Plugin<Project> {
         this.project = project
         project.plugins.apply 'scala'
         project.extensions.create('gatling', GatlingPluginExtension)
+
         project.dependencies {
             testCompile "io.gatling.highcharts:gatling-charts-highcharts:${GATLING_VERSION}",
                         'com.nimbusds:nimbus-jose-jwt:2.22.1'
@@ -33,7 +34,7 @@ class GatlingPlugin implements Plugin<Project> {
                 resources {
                     srcDirs = ['user-files/conf', 'user-files/data']
                 }
-                // change the build direcotry to gatling default
+                // change the build directory to gatling default
                 output.classesDir = 'target/test-classes'
             }
         }
@@ -45,8 +46,9 @@ class GatlingPlugin implements Plugin<Project> {
             final def gatlingRequestBodiesDirectory = firstPath(sourceSet.resources.srcDirs) + "/bodies"
             final def gatlingClasspath = sourceSet.output + sourceSet.runtimeClasspath
             final def scenarios = project.gatling._scenarios ?: getGatlingScenarios(sourceSet)
+            final def localSystemProperties = System.getProperties()?:[:]
+            println 'System properties ' + localSystemProperties + project.gatling.systemProperties
 
-//            project.hasProperty("includex")? logger.info(project.getProperties().get('includex')): logger.info("include is not here")
             def include = project.getProperties().get('include')
             def exclude = project.getProperties().get('exclude')
             def whiteListPattern = createPatternFromList(include==null?null:Arrays.asList(include));
@@ -71,7 +73,8 @@ class GatlingPlugin implements Plugin<Project> {
                         args '-rf', gatlingReportsDirectory,
                              '-s', scenario,
                              '-bdf', gatlingRequestBodiesDirectory
-                        systemProperties(project.gatling.systemProperties ?: [:])
+                        systemProperties(project.gatling.systemProperties ?
+                                         localSystemProperties + project.gatling.systemProperties: localSystemProperties)
                     }
                 }
             }
