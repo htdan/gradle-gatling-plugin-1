@@ -100,7 +100,7 @@ class GatlingPlugin implements Plugin<Project> {
         sourceSet.allScala.files*.toString().
                 findAll { it.endsWith 'Scenario.scala' }.
                 collect { it[scenarioPathPrefix..scenarioPathSuffix] }*.
-                replace('/', '.')
+                replace(System.getProperty("file.separator"), '.')
     }
 
     private firstPath(Set<File> files) {
